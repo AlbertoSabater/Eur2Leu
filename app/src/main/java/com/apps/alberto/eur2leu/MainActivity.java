@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -91,6 +92,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        et_leu.requestFocus();
+
+//
+//        RelativeLayout ll_2 = (RelativeLayout) findViewById(R.id.activity_main);
+//
+//        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(et_leu, InputMethodManager.SHOW_IMPLICIT);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //InputMethodManager imm2 = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        //imm2.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
+//        imm.toggleSoftInputFromWindow(
+//                ll_2.getApplicationWindowToken(),
+//                InputMethodManager.SHOW_FORCED, 0);
 
     }
 
