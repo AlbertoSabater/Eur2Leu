@@ -8,14 +8,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText et_eur;
-    private EditText et_leu;
+    private TextView tv_info, tv_coin1, tv_coin2;
+    private EditText et_1, et_2;
     private Button bt_clean;
 
-    private final double CHANGE = 4.56829639;
+    private final double CHANGE = 74.4430;
+    private final String COIN_1 = "EUR";
+    private final String COIN_2 = "RUB";
+
     private boolean skip = false;
 
     @Override
@@ -23,13 +27,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        et_eur = (EditText) findViewById(R.id.et_eur);
-        et_leu = (EditText) findViewById(R.id.et_leu);
+        // Set money info
+        tv_info = (TextView) findViewById(R.id.tv_info);
+        if (CHANGE > 0) {
+            tv_info.setText(String.format("1 %s = %.3f %s\n100 %s = %.3f %s", COIN_1, CHANGE, COIN_2, COIN_2, 100 / CHANGE, COIN_1));
+        }
+        else {
+            tv_info.setText(String.format("1 %s = %.3f %s\n100 %s = %.3f %s", COIN_1, 100 / CHANGE, COIN_2, COIN_2, CHANGE, COIN_1));
+        }
+
+        // Set Currency Names and hist
+        tv_coin1 = (TextView) findViewById(R.id.tv_coin1);
+        tv_coin2 = (TextView) findViewById(R.id.tv_coin2);
+        tv_coin1.setText(COIN_1);
+        tv_coin2.setText(COIN_2);
+
+        et_1 = (EditText) findViewById(R.id.et_eur);
+        et_2 = (EditText) findViewById(R.id.et_leu);
         bt_clean = (Button) findViewById(R.id.bt_clean);
 
+        et_1.setHint(COIN_1);
+        et_2.setHint(COIN_2);
 
-        // Convert Euro to Leu
-        et_eur.addTextChangedListener(new TextWatcher() {
+
+        // Convert COIN_1 to COIN_2
+        et_1.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -45,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 if(s.length() != 0) {
                     if (!skip) {
                         skip = true;
-                        double leu = Double.parseDouble(s.toString()) * CHANGE;
-                        leu = roundMoney(leu);
-                        et_leu.setText(String.valueOf(leu));
+                        double c2 = Double.parseDouble(s.toString()) * CHANGE;
+                        c2 = roundMoney(c2);
+                        et_2.setText(String.valueOf(c2));
                     }
                     else {
                         skip = false;
@@ -56,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Convert Leu to Eur
-        et_leu.addTextChangedListener(new TextWatcher() {
+        // Convert COIN_1 to COIN_1
+        et_2.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {}
@@ -73,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 if(s.length() != 0) {
                     if (!skip) {
                         skip = true;
-                        double eur = Double.parseDouble(s.toString()) / CHANGE;
-                        eur = roundMoney(eur);
-                        et_eur.setText(String.valueOf(eur));
+                        double c1 = Double.parseDouble(s.toString()) / CHANGE;
+                        c1 = roundMoney(c1);
+                        et_1.setText(String.valueOf(c1));
                     }
                     else {
                         skip = false;
@@ -87,13 +109,13 @@ public class MainActivity extends AppCompatActivity {
         bt_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et_eur.setText("");
-                et_leu.setText("");
+                et_1.setText("");
+                et_2.setText("");
             }
         });
 
 
-        et_leu.requestFocus();
+        et_2.requestFocus();
 
 //
 //        RelativeLayout ll_2 = (RelativeLayout) findViewById(R.id.activity_main);
